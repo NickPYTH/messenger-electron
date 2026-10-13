@@ -127,3 +127,5 @@ npm run dist
 ```
 
 Готовые файлы попадают в папку `dist/`.
+
+Сборка RPM для Альт Linux 10 и 11 описана в `README.AltLinux.md`.

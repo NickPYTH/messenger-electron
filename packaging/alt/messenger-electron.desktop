@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Чатики
+Comment=Мессенджер SGP
+Exec=messenger-electron %U
+Icon=messenger-electron
+Terminal=false
+Type=Application
+Categories=Network;InstantMessaging;
+StartupWMClass=Чатики
