@@ -28,6 +28,9 @@
       "src/**/*",
       "assets/**/*",
       "package.json"
-    ]
+    ],
+    "linux": {
+      "executableName": "messenger-electron"
+    }
   }
 }

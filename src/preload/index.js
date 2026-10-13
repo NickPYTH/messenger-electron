@@ -1,7 +1,9 @@
 const { contextBridge, ipcRenderer } = require('electron');
 
 contextBridge.exposeInMainWorld('electronAPI', {
-    playNotificationSound: () => ipcRenderer.invoke('play-notification-assets'),
+    playNotificationSound: (payload) => ipcRenderer.invoke('play-notification-assets', payload),
+    setBadgeCount: (count) => ipcRenderer.invoke('set-badge-count', count),
+    getBadgeCount: () => ipcRenderer.invoke('get-badge-count'),
     showApp: () => ipcRenderer.send('show-app'),
     takeScreenshot: () => ipcRenderer.invoke('take-screenshot'),
     saveScreenshot: (base64Data) => ipcRenderer.invoke('save-screenshot', base64Data),

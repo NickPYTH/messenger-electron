@@ -3,4 +3,5 @@ module.exports = {
     mainWindow: null,
     tray: null,
     httpBundle: null,
+    unreadCount: 0,
 };

@@ -2,7 +2,7 @@ const express = require('express');
 const { registerRoutes } = require('./routes');
 const { createMcpServer, mountMcp } = require('./mcp');
 
-function createApp({ onNotify, onScreenshot }) {
+function createApp({ onNotify, onScreenshot, onBadge }) {
     const app = express();
     app.use(express.json({ limit: '20mb' }));
 
@@ -15,7 +15,7 @@ function createApp({ onNotify, onScreenshot }) {
         next();
     });
 
-    registerRoutes(app, { onNotify, onScreenshot });
+    registerRoutes(app, { onNotify, onScreenshot, onBadge });
 
     const mcpServer = createMcpServer({ onNotify, onScreenshot });
     mountMcp(app, mcpServer);

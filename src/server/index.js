@@ -3,8 +3,8 @@ require('./polyfill');
 const { createApp } = require('./createApp');
 const { PORT, HOST } = require('../config');
 
-function startServer({ port = PORT, onNotify, onScreenshot } = {}) {
-    const { app, mcpServer } = createApp({ onNotify, onScreenshot });
+function startServer({ port = PORT, onNotify, onScreenshot, onBadge } = {}) {
+    const { app, mcpServer } = createApp({ onNotify, onScreenshot, onBadge });
 
     const server = app.listen(port, HOST, () => {
         console.log(`[HTTP] REST:  http://${HOST}:${port}/health`);

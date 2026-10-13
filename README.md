@@ -81,7 +81,8 @@ Preload (`src/preload/index.js`) публикует в страницу объе
 | Метод | Адрес | Что делает |
 | --- | --- | --- |
 | GET | `/health` | жив ли сервер |
-| POST | `/notify` | уведомление, тело `{ title, body }` |
+| POST | `/notify` | уведомление, тело `{ title, body, count? }`. Без `count` счётчик на значке растёт на 1, с `count` ставится это число |
+| POST | `/badge` | только счётчик на значке, тело `{ count }` |
 | GET | `/screenshot` | PNG основного экрана в base64 |
 
 MCP — отдельный протокол поверх того же порта, адрес `/mcp`. Инструменты лежат по одному файлу в `src/server/mcp/tools/`:
@@ -101,9 +102,9 @@ MCP — отдельный протокол поверх того же порт�
 
 Скриншот по сети: `GET /screenshot` или инструмент MCP `take_screenshot` → функция `onScreenshot`, которую передал main.
 
-Уведомление со страницы: `electronAPI.playNotificationSound()`.
+Уведомление со страницы: `electronAPI.playNotificationSound()`. Точное число непрочитанных: `electronAPI.setBadgeCount(3)`.
 
-Уведомление по сети: `POST /notify` или инструмент `send_notification`.
+Уведомление по сети: `POST /notify` или инструмент `send_notification`. Счётчик на значке трея рисуется в самой иконке, поэтому он виден и в Windows 11, и в трее KDE на Альт Linux. Открытие окна сбрасывает счётчик.
 
 ## Запуск и сборка
 

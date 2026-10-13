@@ -4,6 +4,7 @@ const state = require('./state');
 const { assetPath } = require('./paths');
 const { showMainWindow } = require('./window');
 const { capturePrimaryScreen, getDesktopSources } = require('./screenshot');
+const { incrementBadge, setBadgeCount } = require('./badge');
 
 function setupIPCHandlers() {
     ipcMain.handle('take-screenshot', async () => {
@@ -71,8 +72,13 @@ function setupIPCHandlers() {
         console.log('[IPC] show-app');
     });
 
-    ipcMain.handle('play-notification-assets', async (event, soundType = 'message') => {
+    ipcMain.handle('set-badge-count', (event, count) => setBadgeCount(count));
+
+    ipcMain.handle('get-badge-count', () => state.unreadCount || 0);
+
+    ipcMain.handle('play-notification-assets', async (event, payload = 'message') => {
         try {
+            const { soundType, count } = readNotifyRequest(payload);
             const soundMap = {
                 message: assetPath('sounds', 'message.mp3'),
                 call: assetPath('sounds', 'message.mp3'),
@@ -90,15 +96,32 @@ function setupIPCHandlers() {
                 silent: false,
             }).show();
 
+            if (count === undefined) incrementBadge();
+            else setBadgeCount(count);
+
             return {
                 success: true,
-                usedCustomSound: fs.existsSync(soundPath),
+                usedCustomSound: typeof soundPath === 'string' && fs.existsSync(soundPath),
             };
         } catch (error) {
             console.error('[Notify] Ошибка:', error);
             return { success: false, error: error.message };
         }
     });
+}
+
+function readNotifyRequest(payload) {
+    if (payload && typeof payload === 'object') {
+        const hasCount = Object.prototype.hasOwnProperty.call(payload, 'count');
+        return {
+            soundType: payload.soundType || 'message',
+            count: hasCount ? payload.count : undefined,
+        };
+    }
+    return {
+        soundType: typeof payload === 'string' ? payload : 'message',
+        count: undefined,
+    };
 }
 
 module.exports = { setupIPCHandlers };

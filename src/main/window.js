@@ -2,6 +2,7 @@ const { app, BrowserWindow, Menu } = require('electron');
 const state = require('./state');
 const { preloadPath } = require('./paths');
 const { MESSENGER_URL, WINDOW } = require('../config');
+const { clearBadge } = require('./badge');
 
 function createWindow() {
     state.mainWindow = new BrowserWindow({
@@ -39,6 +40,7 @@ function showMainWindow() {
     if (state.mainWindow.isMinimized()) state.mainWindow.restore();
     state.mainWindow.show();
     state.mainWindow.focus();
+    clearBadge();
     return state.mainWindow;
 }
 
